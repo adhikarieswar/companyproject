@@ -1,0 +1,89 @@
+System Architecture
+ The solution uses separate agents (Priority Assessor and Routing Specialist) for three key reasons:
+
+Specialization: Each agent handles distinct responsibilities - urgency assessment vs department assignment
+
+Maintainability: Updates to routing logic won't affect priority rules, and vice versa
+
+Separation of Concerns: Clean division makes the system easier to debug and extend
+
+Design Decisions
+Rule-Based Approach (vs AI/ML):
+
+Provides predictable, consistent results for business-critical operations
+
+Simplifies debugging since every decision follows explicit rules
+
+Eliminates need for training data or model maintenance
+
+Pydantic Models:
+
+Guarantee valid data structures throughout the system
+
+Automatically generate clear error messages for invalid inputs
+
+Prompt Evolution
+Initial Approach:
+
+python
+if "error" in message: return "high"
+Problem: Overly simplistic - treated all errors equally
+
+Improved Version:
+
+python
+if "error" in message and tier=="enterprise": return "critical"
+Added: Customer tier consideration
+
+Final Version:
+
+python
+if "error" and revenue>3000: return "high"  # money matters
+Enhanced: Incorporates revenue impact for premium customers
+
+Key Test Cases
+Security Auto-Escalation:
+
+python
+{
+  "subject": "login security bug",
+  "customer_tier": "free",  # Tests privilege-blind security handling
+  "expected": ["critical", "security"]
+}
+Verifies: Security issues always get top priority regardless of customer status
+
+Enterprise Priority Boost:
+
+python
+{
+  "customer_tier": "enterprise",
+  "message": "minor question",  
+  "expected": "medium"  # Higher than free user
+}
+Confirms: Enterprise customers receive elevated priority even for non-critical issues
+
+Agent Workflow
+Diagram
+Code
+
+
+
+
+Flow: Tickets get prioritized before routing, ensuring urgent issues are handled first
+
+Performance Characteristics
+Works Best When:
+
+Tickets contain clear keywords ("error", "feature", "billing")
+
+Business rules follow standard operating procedures
+
+Input data maintains consistent structure
+
+Limitations:
+
+Struggles with vague messages like "it's broken" lacking actionable details
+
+Requires manual updates for new ticket types or departments
+
+May need adjustments for non-English support tickets
