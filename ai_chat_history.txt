@@ -1,0 +1,30 @@
+
+Ticket SUP-001:
+  Priority: low
+  Reason: Standard priority issue
+  Department: technical
+  Response Time: 48 hours
+
+Ticket SUP-002:
+  Priority: medium
+  Reason: Enterprise customer with non-critical issue
+  Department: customer_success
+  Response Time: 8 hours
+
+Ticket SUP-003:
+  Priority: low
+  Reason: Standard priority issue
+  Department: feature_request
+  Response Time: 1 week
+
+Ticket SUP-004:
+  Priority: low
+  Reason: Standard priority issue
+  Department: technical
+  Response Time: 24 hours
+
+Ticket SUP-005:
+  Priority: critical
+  Reason: Security-related issue detected
+  Department: security
+  Response Time: 1 hour
